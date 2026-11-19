@@ -1,0 +1,238 @@
+/* Internet Clipboard - clean, minimal, readable on every device. System fonts only. */
+
+:root {
+    --bg: #f4f5f7;
+    --surface: #ffffff;
+    --ink: #1c2128;
+    --muted: #5b6573;
+    --line: #d9dde3;
+    --accent: #2457d6;
+    --accent-ink: #ffffff;
+    --danger: #b3261e;
+    color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #14171c;
+        --surface: #1c2027;
+        --ink: #e8eaed;
+        --muted: #9aa3af;
+        --line: #2d333c;
+        --accent: #7ea2ff;
+        --accent-ink: #10141c;
+        --danger: #ff8a80;
+    }
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 1rem/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+main {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 1rem 1rem 4rem;
+}
+
+main.narrow { max-width: 32rem; padding-top: 3rem; }
+
+h1 { font-size: 1.4rem; line-height: 1.25; margin: 0; }
+main.narrow h1 { margin-bottom: 1rem; }
+
+.large { font-size: 1.15rem; }
+
+/* Header with the logout link in the upper right corner */
+.top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 1rem 1rem 0;
+}
+
+.logout { font-size: 0.85rem; color: var(--muted); }
+
+a { color: var(--accent); }
+
+/* Cards */
+.composer,
+.item {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+/* Text areas */
+textarea {
+    display: block;
+    width: 100%;
+    padding: 0.7rem;
+    background: var(--bg);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    font: 1rem/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace;   /* 16px avoids zoom on iOS */
+    resize: vertical;
+    overflow: auto;
+}
+
+textarea.drag-over { border-color: var(--accent); outline: 2px solid var(--accent); }
+
+/* Buttons */
+button,
+.button,
+input[type="submit"] {
+    display: inline-block;
+    min-height: 2.5rem;
+    padding: 0.4rem 1rem;
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    font: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button:hover,
+.button:hover { border-color: var(--muted); }
+
+button:disabled { opacity: 0.5; cursor: default; }
+
+button[hidden] { display: none; }
+
+.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+}
+
+.primary:hover { border-color: var(--accent); filter: brightness(1.08); }
+
+.danger { color: var(--danger); margin-left: auto; }
+
+.small { min-height: 2rem; padding: 0.1rem 0.7rem; font-size: 0.9rem; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+/* Pending files under the input field */
+.files { list-style: none; margin: 0.5rem 0 0; padding: 0; }
+
+.files li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.files span { overflow-wrap: anywhere; }
+
+/* List items */
+.shared { margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--muted); }
+
+.file-name { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+
+.empty { margin-top: 2rem; text-align: center; color: var(--muted); }
+
+.message {
+    margin: 0.75rem 0 0;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--danger);
+    border-radius: 6px;
+    color: var(--danger);
+}
+
+.message[hidden] { display: none; }
+
+/* Login form */
+.login { display: grid; gap: 0.4rem; margin-top: 1rem; }
+
+.login input[type="text"],
+.login input[type="password"] {
+    width: 100%;
+    min-height: 2.5rem;
+    padding: 0.4rem 0.7rem;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    font: inherit;
+}
+
+.login input[type="submit"] { margin-top: 0.75rem; justify-self: start; }
+
+@media (max-width: 30rem) {
+    .actions button,
+    .actions .button { flex: 1 1 auto; text-align: center; }
+    .danger { margin-left: 0; }
+}
+
+/* ---------- Upper part: cornflower blue input area ---------- */
+
+.input-area {
+    /* Fixed colours, so the band looks the same in light and dark mode. */
+    --ink: #0d1b3d;
+    --muted: #1f3369;
+    --line: #2b4a9a;
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --accent: #0d1b3d;
+    --accent-ink: #ffffff;
+    --danger: #8c1d18;
+    background: #6495ed;
+    color: var(--ink);
+    padding-bottom: 1.5rem;
+}
+
+.wrap {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+    background: #6495ed;
+}
+
+.input-area .composer {
+    margin-top: 1rem;
+    padding: 0;
+    background: none;
+    border: 0;
+}
+
+.input-area textarea { border-color: var(--line); }
+
+.input-area button:not(.primary),
+.input-area .message { background: #ffffff; }
+
+/* ---------- Lower part: slightly smaller type ---------- */
+
+.lower { font-size: 0.875rem; }
+
+.lower textarea { font-size: 0.875rem; }
+
+.lower .item { margin-top: 0.75rem; }
+
+.lower button,
+.lower .button { min-height: 2.25rem; }
+
+/* Touch screens: keep text areas at 16px, otherwise iOS zooms in when one is focused. */
+@media (pointer: coarse) {
+    .lower textarea { font-size: 1rem; }
+}

@@ -1,0 +1,135 @@
+<context>
+    <database_structure>
+        CREATE TABLE `users` (
+        `name` varchar(128) NOT NULL,
+        `pass` varchar(255) DEFAULT NULL,
+        `token` char(64) DEFAULT NULL,
+        PRIMARY KEY (`name`),
+        UNIQUE KEY `token` (`token`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+        CREATE TABLE `content` (
+        `clip_id` int(11) NOT NULL AUTO_INCREMENT,
+        `name` varchar(128) NOT NULL,
+        `clip_text` mediumtext DEFAULT NULL,
+        `file_name` varchar(255) DEFAULT NULL,
+        `share_public` tinyint(1) NOT NULL DEFAULT 0,
+        PRIMARY KEY (`clip_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+    </database_structure>
+    <file_system_structure>
+        clip.php     file, not yet existing
+        clip.js      file, not yet existing
+        clip.css     file, not yet existing
+        clip_db.php  file, existing, needs to be included via 'include' or 'require', provides a mysqli handle '$clip_db'
+        ../storage   directory, existing
+    </file_system_structure>
+    <first_greeting>
+        <!-- This is for users, who have never logged in on the device
+        The HTML is a guideline, doesn't need to be  implemented exactly in this form -->
+
+        <h1>Welcome to Internet Clipboard</h1>
+        <p class="large">Please enter your username and password</p>
+        <p>If you have never entered your password, please choose one now and make sure to remember it!</p>
+        <p>If you have not been provided with a username, please contact mail@bhartwig.net</p>
+        <?php if ($error !== ''): ?><p class="message" role="alert"><?= h($error) ?></p><?php endif; ?>
+        <form action="./clip.php" method="post" class="login">
+            <label for="user">User name:</label>
+            <input type="text" id="user" name="user" autocomplete="username" autocapitalize="none" required>
+            <label for="pass">Password:</label>
+            <input type="password" id="pass" name="pass" autocomplete="current-password" required>
+            <input type="submit" value="Submit" class="primary">
+        </form>
+
+    </first_greeting>
+</context>
+<instructions>
+    <general>
+        Please process the whole prompt with all its parts carefully before starting any work.
+
+        If any instruction is unclear, please ask before producing the output.
+
+        If an instruction is impossible to complete, let's discuss it before you produce the output.
+    </general>
+    <outline>
+        We are building an easy tool to store texts and files online and access them from different devices.
+    </outline>
+    <authentification>
+        authentification is usually provided by a cookie containing the user's name plus an additional token, chnging with every refresh.
+        If the cookie is not set, the "first_greeting" page shall be displayed.
+        The cookie shall never expire, i.e. refreshed with every visit.
+
+        User names have been previously entered into the database. If the "pass" entry in the database is null, the user sets their password with the first login.
+        If the "pass" in the database is set, it must be provided by the user.
+
+        If a user is logged in, there should be a small "logout" link in the right upper corner. This shall delete the login cookie and refresh the page.
+    </authentification>
+    <page_look_and_functionality>
+        <page_top>
+                In the top part of the page, there should be an input field for text with eight lines. If entered text doesn't fit, scrollbars should be displayed.
+                Below there should be two buttons "share only with me" and "share publicly".
+
+                The input field should also accept multiple and consecutive file uploads via drag and drop or copy and paste.
+                If a file has been uploaded, the file names should be displayed directly under the input fields.
+                If a file name's length exceeds 200 characters, the upload should be canceled and an error message should be shown to the user.
+
+                When one of the "share" buttons is clicked, new database entries in the table "content" shall be created:
+
+                In any case, the field "name" should be set to the user's name.
+                If the input field contains text, the text should be stored in the field "clip_text".
+                If files have been uploaded, each file gets its own database entry; the filename should be stored in the field "file_name".
+
+                Before creating the database entries, text or filenames shall be made safe for mysql statements!
+
+                If the "share publicly" button has been clicked, the field "share_public" shall be set to TRUE.
+
+                Files shall be stored in the "storage" directory. In order to prevent conflicting filenames, the stored files should be renamed in the directory to:
+                insert_id + "_" + filename
+
+                After all these operations have been performed, the whole page should be refreshed.
+        </page_top>
+        <page_bottom>
+            In the page's lower part a list should be displayed, ordered by descending ids.
+            The list shall contain all content that has been uploaded or created by the user and all content that has been publicly shared.
+
+            If an item's entry has been shared publicly, there should be a label "Shared by [name]".
+
+            text items should be presented as an editable text field as above (i.e. with scrollbars if the content exceeds the field's size).
+            Remember to reverse any that has been made to make the text mysql-safe!
+            Under text entries their should be two buttons:
+            1. copy
+            2. download as txt
+
+            If the "copy" button has been pressed, the text should be copied to the user's clipboard (provided the user's browser supports this).
+
+            If the download  button is pressed, a text file download should start, the proposed filename having the structure "clip" + "content id" + ".txt"
+
+            file entries shall be presented as the original filename. Try to determine the mime type by the file extension.
+
+            Under file items, their should be a download button for the file.
+            Remember that the stored file has a different name than the original file, but for the download dialogue, the original file name shall be proposed.
+
+            If the user's browser and the mime type permit it, a "copy" button shall be added. Pressing the copy button shall copy the file's content into the clipboard.
+            Please carefully research for which browsers and mime types this is possible in 2026.
+
+            Every item shall also have a "delete" button. Pressing it, shall delete without confirmation:
+
+            1. The corresponding database entry
+            2. The file in the "storage" folder – always remember the naming convention used.
+            3. The corresponding item in the list.
+        </page_bottom>
+        <style>
+            The page's css should be defined in clip.css
+            It should be clear, modern, elgant and minimalistic with focus on readability and functionality on all device types.
+            It must not include any includes of foreign resources.
+        </style>
+        <javascript_and_php>
+            Javascript and PHP shall not include any frameworks, unless absolutely necessary.
+            The code should be formatted for human readability.
+        </javascript_and_php>
+    </page_look_and_functionality>
+</instructions>
+<output>
+    clip.php
+    clip.js
+    clip.css
+</output>
